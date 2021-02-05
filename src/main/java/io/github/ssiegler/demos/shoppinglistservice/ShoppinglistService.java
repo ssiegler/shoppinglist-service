@@ -10,23 +10,23 @@ import java.util.UUID;
 public class ShoppinglistService {
     private final List<Item> items = new ArrayList<>();
 
-    public List<Item> getItems() {
+    public synchronized List<Item> getItems() {
         return items;
     }
 
-    public void insertItem(Item item) {
+    public synchronized void insertItem(Item item) {
         item.setId(UUID.randomUUID().toString());
         items.add(item);
     }
 
-    public void changeItem(String id, Item update) {
+    public synchronized void changeItem(String id, Item update) {
         items.stream()
                 .filter(item -> item.getId().equals(id))
                 .findFirst()
                 .ifPresent(item -> item.setDescription(update.getDescription()));
     }
 
-    public void removeItemById(String id) {
+    public synchronized void removeItemById(String id) {
         items.removeIf(item -> item.getId().equals(id));
     }
 }
