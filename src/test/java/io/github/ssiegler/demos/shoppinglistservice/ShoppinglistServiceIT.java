@@ -53,7 +53,7 @@ class ShoppinglistServiceIT {
 
         assertThat(responseList)
                 .extracting(this::readItem)
-                .containsExactly(addedItem);
+                .contains(addedItem);
 
     }
 
