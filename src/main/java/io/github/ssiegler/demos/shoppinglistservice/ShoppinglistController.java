@@ -30,8 +30,13 @@ public class ShoppinglistController {
 
     @PostMapping(consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
+    // Returning the URL for a Location header would make tests easier
     public void addItem(@RequestBody Item item) {
         shoppinglistService.insertItem(item);
     }
 
+    @PutMapping(consumes = "application/json", value = "{id}")
+    public void updateItem(@PathVariable("id") String id, @RequestBody Item item) {
+        shoppinglistService.changeItem(id, item);
+    }
 }

@@ -18,4 +18,11 @@ public class ShoppinglistService {
         item.setId(UUID.randomUUID().toString());
         items.add(item);
     }
+
+    public void changeItem(String id, Item update) {
+        items.stream()
+                .filter(item -> item.getId().equals(id))
+                .findFirst()
+                .ifPresent(item -> item.setDescription(update.getDescription()));
+    }
 }

@@ -72,6 +72,42 @@ class ShoppinglistServiceIT {
                 .doesNotHaveDuplicates();
     }
 
+    @Test
+    void changed_item_keeps_its_id() {
+        Item oldItem = givenItem("the old item");
+
+        testRestTemplate.postForEntity(SHOPPINGLIST_PATH, oldItem, null);
+
+        List<?> responseList = testRestTemplate.getForObject(SHOPPINGLIST_PATH, List.class);
+        String itemId = findItemIdByDescription(responseList, oldItem.getDescription());
+
+        testRestTemplate.put(SHOPPINGLIST_PATH + "/" + itemId, givenItem("the changed item"));
+
+        List<?> updatedItems = testRestTemplate.getForObject(SHOPPINGLIST_PATH, List.class);
+        assertThat(updatedItems)
+                .extracting(this::readItem)
+                .noneMatch(item -> item.getDescription().equals("the old item"))
+                .contains(itemWithId("the changed item", itemId));
+    }
+
+
+
+    private Item itemWithId(String description, String id) {
+        Item item = new Item();
+        item.setDescription(description);
+        item.setId(id);
+        return item;
+    }
+
+    private String findItemIdByDescription(List<?> responseList, String description) {
+        return responseList.stream()
+                .map(this::readItem)
+                .filter(itemWithId -> description.equals(itemWithId.getDescription()))
+                .map(Item::getId)
+                .findFirst()
+                .orElseThrow();
+    }
+
     private Item givenItem(String description) {
         Item addedItem = new Item();
         addedItem.setDescription(description);
