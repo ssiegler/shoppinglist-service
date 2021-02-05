@@ -29,7 +29,7 @@ The service should allow for the following features:
   
 - [x] Change an item
   
-- [ ] Delete an item
+- [x] Delete an item
   
 - [x] Get a list of all items
 
