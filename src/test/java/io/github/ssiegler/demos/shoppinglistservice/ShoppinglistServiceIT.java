@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
+import static io.github.ssiegler.demos.shoppinglistservice.ShoppinglistController.SHOPPINGLIST_PATH;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -26,14 +27,14 @@ class ShoppinglistServiceIT {
 
     @Test
     void retrieving_shoppinglist_succeeds() {
-        var response = testRestTemplate.getForEntity("/shoppinglist", List.class);
+        var response = testRestTemplate.getForEntity(SHOPPINGLIST_PATH, List.class);
 
         assertThat(response).extracting(ResponseEntity::getStatusCode).isEqualTo(HttpStatus.OK);
     }
 
     @Test
     void adding_item_succeeds() {
-        var response = testRestTemplate.postForEntity("/shoppinglist", new Item(), null);
+        var response = testRestTemplate.postForEntity(SHOPPINGLIST_PATH, new Item(), null);
 
         assertThat(response).extracting(ResponseEntity::getStatusCode).isEqualTo(HttpStatus.CREATED);
     }
@@ -43,9 +44,9 @@ class ShoppinglistServiceIT {
         Item addedItem = new Item();
         addedItem.setDescription("new item");
 
-        testRestTemplate.postForEntity("/shoppinglist", addedItem, null);
+        testRestTemplate.postForEntity(SHOPPINGLIST_PATH, addedItem, null);
 
-        List<?> updatedList = testRestTemplate.getForObject("/shoppinglist", List.class);
+        List<?> updatedList = testRestTemplate.getForObject(SHOPPINGLIST_PATH, List.class);
 
         assertThat(updatedList)
                 .extracting(this::readItem)

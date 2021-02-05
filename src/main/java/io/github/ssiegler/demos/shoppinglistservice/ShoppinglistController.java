@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/shoppinglist")
+@RequestMapping(ShoppinglistController.SHOPPINGLIST_PATH)
 public class ShoppinglistController {
+    public static final String SHOPPINGLIST_PATH = "/shoppinglist";
+
     List<Item> items = new ArrayList<>();
 
     @GetMapping(produces = "application/json")
