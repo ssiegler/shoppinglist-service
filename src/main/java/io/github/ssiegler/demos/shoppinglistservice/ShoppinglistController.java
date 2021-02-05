@@ -8,6 +8,8 @@ import java.util.List;
 
 /**
  * Provides the REST API to the shopping list service
+ *
+ * @see <a href="https://spring.io/guides/gs/rest-service/">Building a RESTful Web Service</a>
  */
 @RestController
 @RequestMapping(ShoppinglistController.SHOPPINGLIST_PATH)
