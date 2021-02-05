@@ -9,7 +9,7 @@ import java.util.List;
 @RequestMapping("/shoppinglist")
 public class ShoppinglistController {
     @GetMapping(produces = "application/json")
-    public List findAllItems() {
+    public List<Item> findAllItems() {
         return List.of();
     }
 
