@@ -39,4 +39,9 @@ public class ShoppinglistController {
     public void updateItem(@PathVariable("id") String id, @RequestBody Item item) {
         shoppinglistService.changeItem(id, item);
     }
+
+    @DeleteMapping("{id}")
+    public void deleteItem(@PathVariable("id") String id) {
+        shoppinglistService.removeItemById(id);
+    }
 }

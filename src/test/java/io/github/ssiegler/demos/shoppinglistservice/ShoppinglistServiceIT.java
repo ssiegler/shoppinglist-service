@@ -90,7 +90,24 @@ class ShoppinglistServiceIT {
                 .contains(itemWithId("the changed item", itemId));
     }
 
+    @Test
+    void deleted_items_are_removed_from_the_list() {
+        Item removedItem = givenItem("delete me");
 
+        testRestTemplate.postForEntity(SHOPPINGLIST_PATH, removedItem, null);
+
+        List<?> responseList = testRestTemplate.getForObject(SHOPPINGLIST_PATH, List.class);
+        String itemId = findItemIdByDescription(responseList, removedItem.getDescription());
+
+        testRestTemplate.delete(SHOPPINGLIST_PATH + "/" + itemId);
+
+        List<?> updatedItems = testRestTemplate.getForObject(SHOPPINGLIST_PATH, List.class);
+        assertThat(updatedItems)
+                .extracting(this::readItem)
+                .noneMatch(item -> item.getId().equals(itemId))
+                .extracting(Item::getDescription)
+                .doesNotContain("delete me");
+    }
 
     private Item itemWithId(String description, String id) {
         Item item = new Item();

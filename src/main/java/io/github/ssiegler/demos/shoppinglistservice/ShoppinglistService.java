@@ -25,4 +25,8 @@ public class ShoppinglistService {
                 .findFirst()
                 .ifPresent(item -> item.setDescription(update.getDescription()));
     }
+
+    public void removeItemById(String id) {
+        items.removeIf(item -> item.getId().equals(id));
+    }
 }
