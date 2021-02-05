@@ -110,13 +110,6 @@ class ShoppinglistServiceIT {
                 .doesNotContain("delete me");
     }
 
-    private Item itemWithId(String description, String id) {
-        Item item = new Item();
-        item.setDescription(description);
-        item.setId(id);
-        return item;
-    }
-
     private String findItemIdByDescription(List<?> responseList, String description) {
         return responseList.stream()
                 .map(this::readItem)
