@@ -45,8 +45,7 @@ class ShoppinglistServiceIT {
 
     @Test
     void added_item_is_returned_in_list() {
-        Item addedItem = new Item();
-        addedItem.setDescription("new item");
+        Item addedItem = givenItem("new item");
 
         testRestTemplate.postForEntity(SHOPPINGLIST_PATH, addedItem, null);
 
@@ -56,6 +55,12 @@ class ShoppinglistServiceIT {
                 .extracting(this::readItem)
                 .containsExactly(addedItem);
 
+    }
+
+    private Item givenItem(String description) {
+        Item addedItem = new Item();
+        addedItem.setDescription(description);
+        return addedItem;
     }
 
     private Item readItem(Object item) {
