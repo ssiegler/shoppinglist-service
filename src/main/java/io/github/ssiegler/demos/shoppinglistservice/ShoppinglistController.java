@@ -1,26 +1,35 @@
 package io.github.ssiegler.demos.shoppinglistservice;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Provides the REST API to the shopping list service
+ */
 @RestController
 @RequestMapping(ShoppinglistController.SHOPPINGLIST_PATH)
 public class ShoppinglistController {
     public static final String SHOPPINGLIST_PATH = "/shoppinglist";
 
-    List<Item> items = new ArrayList<>();
+    private final ShoppinglistService shoppinglistService;
+
+    @Autowired
+    public ShoppinglistController(ShoppinglistService shoppinglistService) {
+        this.shoppinglistService = shoppinglistService;
+    }
 
     @GetMapping(produces = "application/json")
     public List<Item> findAllItems() {
-        return items;
+        return shoppinglistService.getItems();
     }
 
     @PostMapping(consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public void addItem(@RequestBody Item item) {
-        items.add(item);
+        shoppinglistService.insertItem(item);
     }
+
 }

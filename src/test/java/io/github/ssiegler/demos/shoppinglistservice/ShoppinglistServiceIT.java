@@ -57,6 +57,21 @@ class ShoppinglistServiceIT {
 
     }
 
+    @Test
+    void added_items_get_unique_id() {
+        Item item = givenItem("some item");
+
+        testRestTemplate.postForEntity(SHOPPINGLIST_PATH, item, null);
+        testRestTemplate.postForEntity(SHOPPINGLIST_PATH, item, null);
+
+        List<?> responseList = testRestTemplate.getForObject(SHOPPINGLIST_PATH, List.class);
+
+        assertThat(responseList)
+                .extracting(this::readItem)
+                .extracting(Item::getId)
+                .doesNotHaveDuplicates();
+    }
+
     private Item givenItem(String description) {
         Item addedItem = new Item();
         addedItem.setDescription(description);

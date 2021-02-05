@@ -6,6 +6,7 @@ import java.util.Objects;
  * A shopping list item
  */
 public class Item {
+    private String id;
     private String description;
 
     public String getDescription() {
@@ -14,6 +15,14 @@ public class Item {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
@@ -35,4 +44,5 @@ public class Item {
                 "description='" + description + '\'' +
                 '}';
     }
+
 }
