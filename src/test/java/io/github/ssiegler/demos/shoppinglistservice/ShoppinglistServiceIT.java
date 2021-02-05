@@ -1,5 +1,6 @@
 package io.github.ssiegler.demos.shoppinglistservice;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,10 +16,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ShoppinglistServiceIT {
 
     private final TestRestTemplate testRestTemplate;
+    private final ObjectMapper objectMapper;
 
     @Autowired
-    ShoppinglistServiceIT(TestRestTemplate testRestTemplate) {
+    ShoppinglistServiceIT(TestRestTemplate testRestTemplate, ObjectMapper objectMapper) {
         this.testRestTemplate = testRestTemplate;
+        this.objectMapper = objectMapper;
     }
 
     @Test
@@ -33,5 +36,24 @@ class ShoppinglistServiceIT {
         var response = testRestTemplate.postForEntity("/shoppinglist", new Item(), null);
 
         assertThat(response).extracting(ResponseEntity::getStatusCode).isEqualTo(HttpStatus.CREATED);
+    }
+
+    @Test
+    void added_item_is_returned_in_list() {
+        Item addedItem = new Item();
+        addedItem.setDescription("new item");
+
+        testRestTemplate.postForEntity("/shoppinglist", addedItem, null);
+
+        List<?> updatedList = testRestTemplate.getForObject("/shoppinglist", List.class);
+
+        assertThat(updatedList)
+                .extracting(this::readItem)
+                .containsExactly(addedItem);
+
+    }
+
+    private Item readItem(Object item) {
+        return objectMapper.convertValue(item, Item.class);
     }
 }
