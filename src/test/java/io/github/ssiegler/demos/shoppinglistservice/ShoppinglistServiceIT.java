@@ -29,14 +29,18 @@ class ShoppinglistServiceIT {
     void retrieving_shoppinglist_succeeds() {
         var response = testRestTemplate.getForEntity(SHOPPINGLIST_PATH, List.class);
 
-        assertThat(response).extracting(ResponseEntity::getStatusCode).isEqualTo(HttpStatus.OK);
+        assertThat(response)
+                .extracting(ResponseEntity::getStatusCode)
+                .isEqualTo(HttpStatus.OK);
     }
 
     @Test
     void adding_item_succeeds() {
         var response = testRestTemplate.postForEntity(SHOPPINGLIST_PATH, new Item(), null);
 
-        assertThat(response).extracting(ResponseEntity::getStatusCode).isEqualTo(HttpStatus.CREATED);
+        assertThat(response)
+                .extracting(ResponseEntity::getStatusCode)
+                .isEqualTo(HttpStatus.CREATED);
     }
 
     @Test
@@ -46,9 +50,9 @@ class ShoppinglistServiceIT {
 
         testRestTemplate.postForEntity(SHOPPINGLIST_PATH, addedItem, null);
 
-        List<?> updatedList = testRestTemplate.getForObject(SHOPPINGLIST_PATH, List.class);
+        List<?> responseList = testRestTemplate.getForObject(SHOPPINGLIST_PATH, List.class);
 
-        assertThat(updatedList)
+        assertThat(responseList)
                 .extracting(this::readItem)
                 .containsExactly(addedItem);
 
