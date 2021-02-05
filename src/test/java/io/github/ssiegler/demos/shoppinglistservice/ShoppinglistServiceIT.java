@@ -53,7 +53,8 @@ class ShoppinglistServiceIT {
 
         assertThat(responseList)
                 .extracting(this::readItem)
-                .contains(addedItem);
+                .extracting(Item::getDescription)
+                .contains(addedItem.getDescription());
 
     }
 
@@ -87,7 +88,7 @@ class ShoppinglistServiceIT {
         assertThat(updatedItems)
                 .extracting(this::readItem)
                 .noneMatch(item -> item.getDescription().equals("the old item"))
-                .contains(itemWithId("the changed item", itemId));
+                .anyMatch(item -> item.getId().equals(itemId) && item.getDescription().equals("the changed item"));
     }
 
     @Test
