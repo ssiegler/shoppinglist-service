@@ -23,15 +23,15 @@ When the build succeeds, it should place the WAR in the `build/libs` directory.
 
 The service should allow for the following features:
 
-- [ ] Insert an item
+- [x] Insert an item
   
   Should generate a unique ID for later reference
   
-- [ ] Change an item
+- [x] Change an item
   
 - [ ] Delete an item
   
-- [ ] Get a list of all items
+- [x] Get a list of all items
 
 - [x] The project should build a WAR file, deployable on a web container.
   
